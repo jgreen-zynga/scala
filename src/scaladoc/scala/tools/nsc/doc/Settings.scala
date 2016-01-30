@@ -7,6 +7,7 @@ package scala.tools.nsc
 package doc
 
 import java.io.File
+import java.nio.file.Path
 import scala.language.postfixOps
 
 /** An extended version of compiler settings, with additional Scaladoc-specific options.
@@ -256,6 +257,10 @@ class Settings(error: String => Unit, val printMsg: String => Unit = println(_))
       None
     }
   } toMap
+
+  lazy val extUrlDirectoryMappings : Map[String, String] = extUrlMapping filter {
+    case (path, url) => new File(path).isDirectory
+  }
 
   /**
    *  This is the hardcoded area of Scaladoc. This is where "undesirable" stuff gets eliminated. I know it's not pretty,
